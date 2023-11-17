@@ -11,7 +11,7 @@ import fs from "fs";
 import path from 'path'
 import { fileURLToPath } from 'url';
 import inquirer from 'inquirer'
-import { CDNFILTERS, TASKLIST } from './types/Types.js';
+import { CDNFILTERS, DOMAINLIST, SMSCTASKLIST, TASKLIST } from './types/Types.js';
 
 // console.log("hello world")
 
@@ -44,6 +44,35 @@ const cdnFilters : CDNFILTERS[] = [
 
 ]
 
+const domainList : DOMAINLIST[] = Object.values(DOMAINLIST)
+
+const smscTaskList: SMSCTASKLIST[] = Object.values(SMSCTASKLIST)
+
+
+// const fruitsArray: Fruit[] = [];
+
+// Loop through the enum keys and add them to the array
+domainList.forEach((fruit) => {
+    console.log(fruit);
+  });
+
+
+
+
+
+
+
+
+
+const selectDomain = [
+    {
+        type: "list",
+        name: "domain",
+        message: "Please select DOMAIN?",
+        choices: domainList
+    },
+
+]
 
 const questions01 = [
     // {
@@ -119,12 +148,93 @@ const questions03 = [
             // choices: cdnFilters
         }
 ]
+
+const smscQuestion = [
+    {
+        type: "list",
+        name: "task",
+        message: "What do you want to do?",
+        choices: smscTaskList
+    },
+]
+
+
+
+
+// inquirer
+// .prompt(questions01)
+// .then((answers) => {
+//     const selectedTask = answers.task
+//     // console.log( chalk.blue(JSON.stringify(answers, null, 2)))
+//     console.log( chalk.blue("selectedTask : ",selectedTask))
+//     if(selectedTask == TASKLIST.task01){
+
+//         inquirer.prompt(questions02)
+//         .then((answers) => {
+//             console.log( chalk.blue(JSON.stringify(answers, null, 2)))
+//             // const ans = JSON.stringify(answers, null, 2)
+
+//             let ugwFilePathAndCdnFilter = answers
+//             EpcIpListComparionWithCurrentUGWConfigurations(ugwFilePathAndCdnFilter)
+            
+//         }
+//             )
+//         .catch((error) => {
+//             if (error.isTtyError) {
+//                 console.log("Your console environment is not supported!")
+//             } else {
+//                 console.log(error)
+//             }
+//         })
+//     }
+//     if(selectedTask == TASKLIST.task02){
+
+//         inquirer.prompt(questions03)
+//         .then((answers) => {
+//             console.log( chalk.blue(JSON.stringify(answers, null, 2)))
+//             // const ans = JSON.stringify(answers, null, 2)
+
+//             let ugwFilePathAndCdnFilter = answers
+//             EpcIpListComparionWithCurrentUGWConfigurations(ugwFilePathAndCdnFilter)
+            
+//         }
+//             )
+//         .catch((error) => {
+//             if (error.isTtyError) {
+//                 console.log("Your console environment is not supported!")
+//             } else {
+//                 console.log(error)
+//             }
+//         })
+//     }
+    
+
+
+
+// })
+// .catch((error) => {
+//     if (error.isTtyError) {
+//         console.log("Your console environment is not supported!")
+//     } else {
+//         console.log(error)
+//     }
+// })
+
+
+
 inquirer
-.prompt(questions01)
+.prompt(selectDomain)
 .then((answers) => {
-    const selectedTask = answers.task
+    const selectedDomain = answers.domain
     // console.log( chalk.blue(JSON.stringify(answers, null, 2)))
-    console.log( chalk.blue("selectedTask : ",selectedTask))
+    console.log( chalk.blue("selectedTask : ",selectedDomain))
+    if(selectedDomain == DOMAINLIST.PSCORE){
+
+        inquirer.prompt(questions01)
+        .then((answers)=>{
+
+            const selectedTask = answers.task
+    
     if(selectedTask == TASKLIST.task01){
 
         inquirer.prompt(questions02)
@@ -165,6 +275,31 @@ inquirer
             }
         })
     }
+})
+.catch((error) => {
+    if (error.isTtyError) {
+        console.log("Your console environment is not supported!")
+    } else {
+        console.log(error)
+    }
+})
+
+} else if (selectedDomain == DOMAINLIST.SMSC){
+
+    inquirer.prompt(smscQuestion)
+    .then((answers)=>{
+        const selectedTask = answers.task
+
+        if(selectedTask == SMSCTASKLIST.task01){
+            console.log(chalk.green("selectedTask : ",selectedTask))
+
+        }
+
+    })
+
+
+
+}
     
 
 
@@ -177,7 +312,6 @@ inquirer
         console.log(error)
     }
 })
-
 // process.exit(0)
 
 // const filePathCdn_full_ip_list = path.dirname ("./files/cdn_full_IP_list.txt")

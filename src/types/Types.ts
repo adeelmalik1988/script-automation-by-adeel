@@ -7,6 +7,20 @@ export enum TASKLIST {
 
 }
 
+export enum DOMAINLIST {
+    PSCORE = "PSCORE",
+    SMSC = "SMSC",
+
+}
+
+
+export enum SMSCTASKLIST {
+    task01 = "ShortCode List Script Generation",
+    task02 = "Single ShortCode Script Generation",
+
+
+}
+
 export enum CDNFILTERS {
     pubg = "pubg",
     netflix = "netflix",
